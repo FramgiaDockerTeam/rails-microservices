@@ -31,7 +31,6 @@ services:
         image: mysql
         volumes_from:
             - data
-            - logs
         expose:
             - "3306"
         environment:
@@ -44,8 +43,7 @@ services:
         restart: always
         image: mysql
         volumes_from:
-            - data
-            - logs
+            - data_test
         expose:
             - "3306"
         environment:
@@ -58,9 +56,13 @@ services:
         image: debian
         volumes:
             - ./data/mysql:/var/lib/mysql
-            - ./data/mysql_test:/var/lib/mysql
             - /private/var/lib/project_data:/data
             - /private/var/lib/project_logs/nginx:/var/log/nginx
+    data_test:
+        container_name: project_data_test
+        image: debian
+        volumes:
+            - ./data/mysql_test:/var/lib/mysql
     logs:
         container_name: project_logs
         image: debian
