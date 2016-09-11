@@ -18,6 +18,13 @@ services:
             - 8080:80
         environment:
             DATABASE_HOSTNAME: mysql
+            DATABASE_DBNAME: rails_db
+            DATABASE_USERNAME: root
+            DATABASE_PASSWORD: root
+            DATABASE_HOSTNAME_TEST: mysql_test
+            DATABASE_DBNAME_TEST: rails_db_test
+            DATABASE_USERNAME_TEST: test
+            DATABASE_PASSWORD_TEST: test
     mysql:
         container_name: project_mysql
         restart: always
