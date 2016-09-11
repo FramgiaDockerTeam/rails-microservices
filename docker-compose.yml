@@ -14,19 +14,10 @@ services:
         volumes_from:
             - application
             - logs
-        tty: true
-    data:
-        container_name: project_data
-        image: debian
-        volumes:
-            - ./data/mysql:/var/lib/mysql
-            - /private/var/lib/project_data:/data
-            - /private/var/lib/project_logs/nginx:/var/log/nginx
-    logs:
-        container_name: project_logs
-        image: debian
-        volumes:
-            - ./log/nginx:/var/log/nginx
+        ports:
+            - 8080:80
+        environment:
+            DATABASE_HOSTNAME: mysql
     mysql:
         container_name: project_mysql
         restart: always
@@ -37,7 +28,34 @@ services:
         expose:
             - "3306"
         environment:
-            MYSQL_DATABASE: cucumber_rails5_development
+            MYSQL_DATABASE: rails_db
             MYSQL_USER: root
             MYSQL_PASSWORD: root
             MYSQL_ROOT_PASSWORD: root
+    mysql_test:
+        container_name: project_mysql_test
+        restart: always
+        image: mysql
+        volumes_from:
+            - data
+            - logs
+        expose:
+            - "3306"
+        environment:
+            MYSQL_DATABASE: rails_db_test
+            MYSQL_USER: test
+            MYSQL_PASSWORD: test
+            MYSQL_ROOT_PASSWORD: root
+    data:
+        container_name: project_data
+        image: debian
+        volumes:
+            - ./data/mysql:/var/lib/mysql
+            - ./data/mysql_test:/var/lib/mysql
+            - /private/var/lib/project_data:/data
+            - /private/var/lib/project_logs/nginx:/var/log/nginx
+    logs:
+        container_name: project_logs
+        image: debian
+        volumes:
+            - ./log/nginx:/var/log/nginx
