@@ -18,11 +18,11 @@ services:
             - 8080:80
         environment:
             DATABASE_HOSTNAME: mysql
-            DATABASE_DBNAME: rails_db
+            DATABASE_DB_NAME: rails_db
             DATABASE_USERNAME: root
             DATABASE_PASSWORD: root
             DATABASE_HOSTNAME_TEST: mysql_test
-            DATABASE_DBNAME_TEST: rails_db_test
+            DATABASE_DB_NAME_TEST: rails_db_test
             DATABASE_USERNAME_TEST: test
             DATABASE_PASSWORD_TEST: test
     mysql:
@@ -55,16 +55,15 @@ services:
         container_name: project_data
         image: debian
         volumes:
-            - ./data/mysql:/var/lib/mysql
-            - /private/var/lib/project_data:/data
-            - /private/var/lib/project_logs/nginx:/var/log/nginx
+            - .docker/mysql:/var/lib/mysql
+            - .docker/data:/data
     data_test:
         container_name: project_data_test
         image: debian
         volumes:
-            - ./data/mysql_test:/var/lib/mysql
+            - .docker/mysql_test:/var/lib/mysql
     logs:
         container_name: project_logs
         image: debian
         volumes:
-            - ./log/nginx:/var/log/nginx
+            - .docker/logs/nginx:/var/log/nginx
